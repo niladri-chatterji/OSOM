@@ -1,0 +1,48 @@
+\section{Concentration Inequalities}  \label{sec:tech}
+
+Let $\{\mathcal{F}_{t}\}_{t=0}^{\infty}$ be a filtration. Let $\{\xi_t\}_{t=1}^{\infty}$ be a real-valued stochastic process such that $\xi_t$ is $\mathcal{F}_{t-1}$ measurable and $\xi_t$ is conditionally $\sigma$-sub-Gaussian for some $\sigma>0$ that is, for all $\lambda>0$
+\begin{align*}
+    \mathbb{E}\left[\exp(\lambda \xi_t)\big\lvert \mathcal{F}_{t-1} \right] \le \exp\left( \frac{\sigma^2\lambda^2}{2}\right).
+\end{align*}
+Let $\{Y_t\}_{t=1}^\infty$ be an $\mathbb{R}^d$-valued stochastic process such that $Y_t$ is $\mathcal{F}_{t-1}$ measurable. Assume that $V$ is a $d\times d$ positive definite matrix. For any $t>0$ define
+\begin{align*}
+    \bar{V}_t = V + \sum_{s=1}^t Y_s Y_s^{\top}, \qquad S_t = \sum_{s=1}^{t} \xi_s Y_s.
+\end{align*}
+With this setup in place the following is a re-statement the self-normalized concentration bound, Theorem 1 of \citep{abbasi2011improved}.
+
+\begin{theorem}\label{thm:selfnormalized} For any $\delta>0$, with probability at least $1-\delta$ for all $t\ge 0$,
+\begin{align*}
+    S_t^{\top}\bar{V}_tS_t = \lv S_t \rv_{\bar{V}_t}^2 \le 2\sigma^2 \log\left( \frac{\det(\bar{V}_t)^{1/2}\det(V)^{-1/2}}{\delta}\right).
+\end{align*}
+\end{theorem}
+
+
+
+%The following is a restatement of Lemma 11 from \citep{abbasi2011improved} which is used to control the sum of the matrix norms of the context vectors.
+
+%\begin{lemma}\label{lem:boundxnorm}Let $\{Y_s\}_{t=1}^{\infty}$ be a sequence in $\mathbb{R}^d$ with $\lv Y_s\rv_2 \le L$, and let $V_t$ be as defined above, then,
+%\begin{align*}
+ %   \sum_{t=1}^n \min\left\{1,\lv Y_t \rv^2_{\bar{V}_{t-1}^{-1}}\right\}\le 2d\log\left(\frac{\Tr(V)+nL^2}{d}\right)-2\log(\det (V)).
+%\end{align*}
+%\end{lemma}
+
+
+
+
+
+\note{define the relevant quantities. Matrix martingale, the filtration, }
+Here we state a version of the Matrix Freedman Inequality due to \citep{tropp2011freedman} (Corollary 1.3) .
+\begin{theorem}\label{thm:matrixfreedman} Consider a matrix martingale $\{Z_s:s = 0,1,\ldots\}$ whose values are self-adjoint matrices with dimension $d$, and let $X_s:s=0,1,\ldots$ be the difference sequence. Assume that the difference sequence is uniformly bounded,
+\begin{align*}
+    \lv X_s\rv_{op} \le R \qquad \text{almost surely} \qquad \text{for }s = 1,2\ldots
+\end{align*}
+Define the predictable quadratic variation process of the martingale:
+\begin{align*}
+    W_t: = \sum_{s=1}^t \mathbb{E}\left[X_s^2 \lvert \mathcal{F}_{s-1}\right] \qquad \text{for }t=1,2,\ldots
+\end{align*}
+Then for all $u\ge 0$ and $\omega^2 >0$,
+\begin{align*}
+    \mathbb{P}\left\{  \lv Z_t\rv_{op} \ge u\cdot t  \text{ and } \lv W_t\rv_{op} \le \omega^2\cdot t \right\} \le \delta,
+\end{align*}
+for all $t\ge \left( 32\omega^2/u^2 + R/(12u)\right)\log(2d/\delta)$.
+\end{theorem}

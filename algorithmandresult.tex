@@ -1,0 +1,79 @@
+\section{Construction of Confidence Sets}
+At the end round $t$ we can build an upper confidence estimate for each arm. Let $T_i(t): = \sum_{s=1}^t \mathbb{I}\left[A_s = i\right]$ be the number of times arm $i$ was pulled at the end of round $t$ and $\averagerew := \sum_{s=1}^t g_{i,s}\mathbb{I}\left[A_s = i\right]/T_i(t)$ be the average reward of that arm at the end of round $t$. For each arm we define the upper confidence estimate as follows,
+\begin{align}
+    \label{def:ucbarms}
+    \muit{i}{t} : = \averagerew + \sigma\sqrt{\frac{1+T_{i}(t)}{T_{i}^2(t)}\left(1+ 2\log\left(\frac{K(1+T_i(t))^{1/2}}{\delta}\right)\right)}.
+\end{align}
+ By using standard concentration arguments it possible to show the following bound on $\lvert \mu_i - \averagerew \rvert$. The following is a restatement of Lemma 6 in \citep{abbasi2011improved} we have the following claim. 
+
+\begin{lemma}\label{lem:csimplebound} Under the simple model, with probability at least $1-\delta$ we have, $\forall i \in \{1,\ldots,K\}, \forall t\ge 0$,
+\begin{align*}
+     \qquad \lvert \mu_i - \averagerew \rvert \le \sigma\sqrt{\frac{1+T_{i}(t)}{T_{i}^2(t)}\left(1+ 2\log\left(\frac{K(1+T_i(t))^{1/2}}{\delta}\right)\right)}.
+\end{align*}
+\end{lemma}
+
+
+For any round $t>K$, let $\That$ be the $\ell^2$-regularized least-squares estimate of $\Tstar$ with the regularization parameter $\lambda = 1$ by assuming the biases to be $\tilde{\mu}_{1}(t-1),\ldots,\tilde{\mu}_K(t-1)$:
+\begin{align}
+\label{def:ohat}
+\That = \left(\Aboldt^{\top}\Aboldt +  I\right)^{-1} \Aboldt^{\top} \Gboldt,
+\end{align}
+where $\Aboldt$ is the matrix whose rows are the context vectors selected up until round $t$ -- $\alpha_{A_{1},1}^{\top},\ldots,\alpha_{A_t,t}^{\top}$ and $\Gboldt = (g_{A_{1},1}- \tilde{\mu}_{A_{1}}(t-1),\ldots,g_{A_t,t}- \tilde{\mu}_{A_{t}}(t-1))^{\top}$. Here we are regressing on the rewards seen to estimate $\theta^*$, while using the bias estimates $\muit{i,t-1}$.
+
+\begin{lemma} \label{lem:betabound}Let $\That$ be as defined above then with probability at least $1-\delta$, for all $t \ge 0$, $\Tstar$ lies in the set
+\begin{align} \label{def:ccomplex}
+\ccomplex := \left\{\theta \in \mathbb{R}^{d+K} : \left\lv \That - \theta \right\rv_{\mconstraint}  \le \underbrace{\sigma\sqrt{d \log\left(\frac{1+  t}{\delta}\right)} + 1}_{ =: \sqrt{\beta_t}}\right\},
+\end{align}
+where $V_t : = \sum_{s=1}^t$.
+\end{lemma}
+\section{Algorithm and Main Result} 
+\begin{algorithm}[t]
+\label{algorithm:OFULER}
+\caption{\algname - Optimistic Selection Of Models}
+
+\textit{Pure Exploration Phase}
+
+\For{$t=1,\ldots,K$}{
+Play arm $t$ and receive reward $g_{t,t}$
+}
+
+\textit{Start of Model Selection Phase}
+
+\For{$t=K+1,\ldots,n$}{
+    $b = \text{`Simple'}$ 
+     
+    \textit{Simple Model Estimate: } $i_t \in \argmax_{\iinrange{1}{K}} \left\{\tilde{\mu}_i(t-1)\right\}$. \\
+    
+    \textit{Complex Model Estimate: }$j_t,\tilde{\theta}_t \in \argmax_{\iinrange{1}{K}, \theta \in \mathcal{C}_{t-1}^c} \left\{\tilde{\mu}_{i}(t-1)+\langle \alpha_{i,t},\theta \rangle\right\}$. \\
+
+    \If{$b = \text{`Simple'}$} {Check the Condition: \begin{align} \label{test:complextest} \sum_{s=1}^t \left[\tilde{\mu}_{j_t}(t-1) + \langle \alpha_{j_t,t},\tilde{\theta}_t\rangle\right] - \sum_{s=1}^t g_{i_s,s} < w(t).\end{align}
+    
+    If violated then set $b=`Complex'$.
+    }
+    
+    If $b=\text{`Simple'}$: Play arm $i_t$ and receive reward $g_{i_t,t}$. \\
+    
+    Else if $b=\text{`Complex'}$: Play arm $j_t$ and receive $g_{j_t,t}$
+    
+    Update $\left\{\tilde{\mu}_i(t)\right\}_{i=1}^K$ and $\ccomplex$.
+        
+    }    
+        
+
+\end{algorithm}
+where in the algorithm, \small
+\begin{align} \label{def:wdefinition}
+w(t) &:= \rem{fill in the blank}
+\end{align}
+
+\normalsize
+\rem{clean algorithm up. Add intuition behind the pieces. Inspired by combining SAO with OFUL and UCB. Why does the test make sense.}
+
+\begin{theorem}\label{thm:mainregretbound}
+If we run $\algname$ then with probability $1-4\delta$:
+\begin{enumerate}[label=(\alph*)]
+    \item Under the \emph{Simple Model} $\psued{n} \le \rem{fill in the blank}$.
+    \item Under the \emph{Complex Model} $\regret{n} \le \rem{fill in the blank}$.
+\end{enumerate}
+\end{theorem}
+

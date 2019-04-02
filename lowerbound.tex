@@ -1,0 +1,106 @@
+\section{Problem-dependent, Asymptotic Lower Bound}
+
+In the context of the results above, it is reasonable to ask whether we can obtain even stronger \textit{problem-dependent rates}; that is, the $\mathcal{O}(\log n)$ rates for the simple model and the $\mathcal{O}(d \log n)$ rate for the complex model\footnote{the authors of OFUL~\cite{abbasi2011improved} obtain a problem-dependent upper bound $\mathcal{O}\left( \frac{1}{\Delta} \left( \log^2 n + d \log n \right) \right)$ where $\Delta := \min_{1 \leq t \leq n} \Delta_t$ and $\Delta_t$ is the expected gap between the reward of the best arm and the second best arm in round $t$.}.
+Note that the analysis we have presented does not help with this goal, as we have allowed for fluctuations on the order of $\sqrt{n}$.
+
+We consider the special case of $K = 2$ arms and show that, for a fixed $d > 0$, to be able to retain a logarithmic rate for complex model instances, we need to pay the model complexity factor in the simple model regime as well.
+
+\begin{theorem}\label{thm:lowerbound}
+For every simple instance $s = (\mu_1, \mu_2)$, there exists a context sequence $\{X_{1,t}, X_{2,t}\}_{t=1}^{\infty}$ and a set of complex instances $\mathcal{C}$ such that
+\begin{align*}
+    R_n^c &= \mathcal{O}(n^a) \text{ for all $a > 0$ and for all $c \in \mathcal{C}$} \\
+    \implies {\lim \inf}_{n \to \infty} \frac{R_n^s}{\log \left(n/d\right)} &\geq \frac{(d/2 + 1) \cdot \Delta}{D_{KL}(\mu_2 || \mu_1)} .
+\end{align*}
+
+\end{theorem}
+
+Note that $d \log \left(n/d\right) > \log n$ by a substantial amount when $n >> d >> 1$, which is typically the regime of interest\footnote{If $d << n$ for instance, it is typically not useful to exploit the linear structure and an expert-based algorithm gives the optimal guarantee.}.
+Theorem~\ref{thm:lowerbound} implies that we need to pay an extra model complexity factor even in simple instances to be able to distinguish all complex instances to the extent required for logarithmic regret rates with the horizon.
+Like the Lai-Robbins lower bound, we proceed by reducing the composite testing problem to a set of simple (multiple) hypotheses.
+
+\begin{Proof}
+Consider simple instance $s = (\mu_1, \mu_2)$.
+We define the following context instance $\{X_{1,t}, X_{2,t}\}_{t \geq 1}$:
+\begin{align*}
+    X_{1,t} &= \hat{e}_1 \\
+    X_{2,t} &= \hat{e}_{t (\mod d) + 1}
+\end{align*}
+
+where $\hat{e}_j, j \in \{1,2,\ldots, d\}$ represents the standard basis vector in $\mathbb{R}^d$.
+Next, we define our set of complex instances below.
+
+\begin{definition}\label{def:complexconstructions}
+For a subset $S \subset [d]: |S| = d/2$, we define special complex instance 
+\begin{align*}
+c(S, \epsilon;(\mu_1, \mu_2)) &:= \theta^*(S, \epsilon;(\mu_1,\mu_s)) \text{ where } \\
+    \theta^*(S;(\mu_1,\mu_2))_j &:= \begin{cases}
+    \mu_2 \text{ if } j \notin S \\
+    \mu_1 + \epsilon \text{ if } j \in S .
+    \end{cases}
+\end{align*}
+
+Corresponding to simple instance $s = (\mu_1,\mu_2)$, we will consider the class of special context instances $\mathcal{C} := \{c(S, \epsilon;s): S \subset [d], |S| = d/2\}$.
+\end{definition}
+
+The intuition behind the constructions in Definition~\ref{def:complexconstructions} is clear: the contexts for arm $1$ give no information about $\theta^*$.
+Even if we were given oracle information that arm $1$ is better than arm $2$ under the simple model, we are forced to explore arm $2$ some minimum number of times to learn which environment we are in.
+In fact, we are forced to explore arm $2$ in a very specific way, as we describe below.
+
+\begin{lemma}\label{lem:samplinglowerbound}
+We denote $\mathbb{E}_s$ to be the expectation under the stochastic process induced by instance $c$.
+Further, (this is a definition very specific to the context choice outlined above) denote $T_2(n;j) := \sum_{t=1}^n \mathbb{I}[I_t = 2; t \mod d + 1 = j]$ for every $j \in [d]$.
+
+Then, there exists a set $S' \in [d]: |S'| > d/2$ such that
+\begin{subequations}
+\begin{align}
+    \mathbb{E}_c[R_n^c] &= \mathcal{O}(n^a) \text{ for all $a > 0$ and for all $c \in \mathcal{C}$} \label{eq:complexcondition} \\
+    \implies {\lim \inf}_{n \to \infty} \frac{\mathbb{E}_s[T_2(n;j)]}{\log \left(n/d\right)} &\geq \frac{1}{D_{KL}(\mu_2 || \mu_1)} \text{ for all } j \in S' . \label{eq:samplinglowerbound}
+\end{align}
+\end{subequations}
+
+\end{lemma}
+
+Clearly, the proof of Theorem~\ref{thm:lowerbound} follows easily from Lemma~\ref{lem:samplinglowerbound}, because
+\begin{align*}
+    {\lim \inf}_{n \to \infty} \frac{\mathbb{E}_s[T_2(n)]}{\log \left(n/d\right)} &= {\lim \inf}_{n \to \infty} \frac{\sum_{j=1}^d \mathbb{E}_s[T_2(n;j)]}{\log \left(n/d\right)} \\
+    &\geq {\lim \inf}_{n \to \infty} \frac{\sum_{j \in S'} \mathbb{E}_s[T_2(n;j)]}{\log \left(n/d\right)} \\
+    &\geq \sum_{j \in S'} {\lim \inf}_{n \to \infty} \frac{\mathbb{E}_s[T_2(n;j)}{\log \left(n/d\right)} ,
+\end{align*}
+
+where the first inequality follows because of pointwise non-negativity of $T_2(n;j)$ for all $j$, and the second inequality follows because we take the inf inside of the individual sums.
+Then, we have $\mathbb{E}_s[R_n^s] = \Delta \mathbb{E}_s[T_2(n)]$ and the original statement of Theorem~\ref{thm:lowerbound} easily follows.
+Thus, we devote the rest of the proof to proving Lemma~\ref{lem:samplinglowerbound}.
+
+\begin{Proof}
+Observe that for a given complex instance $c(S,\epsilon;s)$, we have 
+\begin{align*}
+    \mathbb{E}_c[R_n^c] &= \sum_{j \in S} \epsilon \cdot \mathbb{E}_c[T_1(n;j)] + \sum_{j \notin S} \Delta \mathbb{E}_c[T_2(n;j)] .
+\end{align*}
+
+Now, let condition~\eqref{eq:samplinglowerbound} be violated.
+Then, there exists a set $S^*$ of size $d/2$ such that 
+\begin{align}\label{eq:toofewsamples}
+    {\lim \inf}_{n \to \infty} \frac{\mathbb{E}_s[T_2(n;j)]}{\log \left(n/d\right)} < \frac{1}{D_{KL}(\mu_2 || \mu_1)} \text{ for all } j \in S^* .
+\end{align}
+
+\note{This is the set $S^*$ of contexts for which the second arm is actually better than the first arm, and sampling the first arm is suboptimal.}
+
+We consider the particular complex instance $c(S^*, \epsilon; s)$.
+We will use a change-of-measure argument to claim that under the condition of Equation~\eqref{eq:toofewsamples}, simple instance $s$ and complex instance $c(S^*, \epsilon;s)$ cannot be sufficiently distinguished.
+Effectively, we'll show that for all $j \in S^*$,
+\begin{align*}
+    \mathbb{E}_c[T_2(n;j)] &\leq () \mathbb{E}_s[T_2(n;j)] \\
+    &< () \frac{\log \left(n/d\right)}{D_{KL}(\mu_2 ||\mu_1)} \text{ for all } j \in S^*. 
+\end{align*}
+
+\note{To do: write completely rigorously using Bubeck Cesa-Bianchi Chapter $2$ writing style.}
+This implies that there exists some $a > 0$ for which
+\begin{align*}
+    \mathbb{E}_d[T_1(n;j)] &= \Omega(\left(\frac{n}{d}\right)^a) \text{ for all } j \in S^*\\
+    \implies \mathbb{E}_c[R_n^c] = \epsilon \cdot \Omega(d \cdot \left(\frac{n}{d}\right)^a) 
+\end{align*}
+
+and this particular complex instance would suffer more than logarithmic regret asymptotically.
+This can only be avoided if condition~\eqref{eq:samplinglowerbound} is in fact satisfied. 
+This completes the proof of Lemma~\ref{lem:samplinglowerbound}.
+\end{Proof}

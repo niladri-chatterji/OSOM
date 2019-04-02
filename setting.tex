@@ -1,0 +1,257 @@
+\usepackage[papersize={17cm,24cm},margin=22mm,top=17mm,headsep=5mm]{geometry} 
+%\usepackage[papersize={17cm,24cm},margin=13mm,top=17mm,headsep=5mm]{geometry} 
+%\usepackage[utf8]{inputenc}
+%\usepackage{xltxtra} % extras for XeLaTeX
+%\usepackage{unicode-math}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%\usepackage{times}
+\usepackage{enumerate}
+\usepackage{verbatim} % verbatim input
+\usepackage{titling} % customize title
+\usepackage{csquotes} % context sensitive quotes
+\usepackage{upquote} % allow correct quotes in verbatim
+\usepackage[bottom]{footmisc} % put footnotes down at the bottom margin
+%\usepackage[svgnames]{xcolor} % color pictures with SVG names
+\usepackage{graphicx} % \includegraphics
+%\usepackage[noend]{algpseudocode}
+\usepackage[ruled]{algorithm2e}
+\usepackage{thmtools}
+\usepackage{thm-restate}
+%\usepackage{tikz}
+%\usetikzlibrary{matrix,shapes,arrows,positioning,chains, calc}
+%\usepackage[dvipsnames]{xcolor}
+\usepackage[dvipsnames]{xcolor}
+%\usepackage{lmodern}
+%\usepackage{authblk}
+%\usepackage{hyperref}
+\usepackage[colorlinks,linkcolor = Aquamarine, urlcolor  = violet, citecolor = YellowOrange, anchorcolor = violet]{hyperref}
+%\usepackage[colorlinks,linkcolor = blue, urlcolor  = green, citecolor = Aquamarine, anchorcolor = blue]{hyperref}
+%\usepackage{optidef}
+%\usepackage{enumitem} % customize lists
+%\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+%\setitemize{itemsep=2pt,topsep=4pt,parsep=0pt,partopsep=0pt}
+%\usepackage{covington}  % for numbered linguistic examples
+
+\usepackage[english]{babel} % multilinguality
+%\usepackage{polyglossia} % newer alternative to babel
+%\setdefaultlanguage{english} % see http://ctan.uib.no/macros/xetex/latex/polyglossia/polyglossia.pdf
+%\setmainfont[Mapping=tex-text,Ligatures=TeX,Scale=1.0]{Linux Libertine O} 
+%\setmonofont[Mapping=tex-text,Scale=MatchLowercase,LetterSpace=-2.0]{DejaVu Sans Mono}
+%\setmathfont{Cambria Math}
+%\setmathfont[math-style=upright,vargreek-shape=unicode]{Neo Euler}
+%\setmathfont{Linux Libertine O}
+\renewcommand{\baselinestretch}{1.04} % stretch distance between baselines
+\frenchspacing % reduce space after sentence-final punctuation
+\date{}
+\setlength{\parindent}{1em}
+\clubpenalty = 10000
+\widowpenalty = 10000
+\hfuzz = 2pt  % No warnings about margin overhangs less than this amount.
+%\setlength{\belowcaptionskip}{-1.2em}
+%Theorem Repeat solutions
+
+
+%\usepackage[compact,noindentafter]{titlesec} % customize section headings
+%\titlespacing{\section}{0pt}{2.7mm}{1.5mm} % left indent, space before, space after
+%\titlespacing{\subsection}{0pt}{2mm}{1pt}
+%\titlespacing{\subsubsection}{0pt}{1.2mm}{0.5pt}
+
+%\newcommand\Volume{N} % BeLLS Volume number
+%\newcommand\Voleditors{Jan Editor and Ed Janitor}
+%\newcommand\Voltitle{The book title}
+%\newcommand\VolISBN{N}
+%\newcommand\VolDOI{N}
+
+\usepackage{natbib}
+
+%\usepackage{fullname}
+%\bibliographystyle{plain}
+%\bibliographystyle{chicago} % chicago or spbasic or spmpsci or spphys
+\bibliographystyle{alpha} % chicago  or spbasic or spmpsci or spphys
+%\setlength{\bibhang}{-0.5em}
+%\setlength{\bibsep}{0mm}
+%\let\bibfont=\small
+%\setcitestyle{numbers}
+
+% footnote without number
+% \newcommand\blfootnote[1]{
+%   \begingroup
+%   \renewcommand\thefootnote{}\footnote{\hspace{-2.4em} #1}%
+%   \addtocounter{footnote}{-1}
+%   \endgroup
+% }
+
+% customize title
+%\renewcommand{\maketitle}
+%  {\bgroup\setlength{\parindent}{0pt}
+%   \begin{flushleft}
+%    \textbf{\LARGE{\ \\ \vspace{20mm}\strut\thetitle\strut}\vspace{2mm}}
+%    
+%    {\Large\theauthor}
+%  \end{flushleft}\egroup\vspace{18mm}
+%}
+
+%% customize abstract
+%\renewenvironment{abstract}
+%  {\noindent\small %\quotation
+%  {\noindent{\large\textbf\abstractname. }%\par\nobreak\smallskip
+%  \thispagestyle{plain}
+%  %\blfootnote{In: \emph{Volume title,} edited by Jan Editor and Ed Janitor. BeLLS Vol. N (2017), DOI N. Open Access under the terms of CC-BY-NC-4.0.}
+%  }}
+%  {}
+%    
+%% command in which to embed tabular material in numbered example
+%% use: \begin{example}\extab\begin{tabular ...
+%\newcommand{\extab}[2][-0.69\baselineskip]{ 
+%   \parbox[t]{.9\textwidth}{
+%     \setlength{\tabcolsep}{1.3pt} % use small space between columns
+%     \vspace{#1}
+%     #2
+%    }
+%}
+
+% command to put ref in parentheses
+\newcommand{\refp}[1]{(\ref{#1})}
+  
+%user defined commands
+\newcommand*\Mirr[1]{\textsc{Mirr} (#1)}
+\newcommand*\Wd[0]{\textit{W}_2}
+\newcommand*\dd[2]{\frac{\partial #1}{\partial #2}}
+\newcommand*\x[0]{\textbf{x}}
+\newcommand*\stein[1]{\mathcal{A}_{#1}}
+\newcommand*\w[0]{\textbf{w}}
+\newcommand*\at[2]{\left.#1\right|_{#2}}
+\newcommand*\ps[0]{p^*}
+\newcommand*\del[0]{\partial}
+\newcommand*\R[0]{\mathbb{R}}
+\newcommand*\Z[0]{\mathbb{Z}}
+\renewcommand*\div[0]{\nabla \cdot}
+\newcommand*\ddt[0]{\frac{d}{d t}}
+\newcommand*\dds[0]{\frac{d}{d s}}
+\newcommand*\ddp[1]{\frac{\delta #1}{\delta p}}
+\newcommand*\tr[0]{\text{tr}}
+\newcommand*\KL[2]{\mathcal{KL}\left(#1\|#2\right)}
+\newcommand*\lin[1]{\langle #1\rangle}
+\newcommand*\E[1]{\mathbb{E}\left[#1\right]}
+\newcommand*\Ep[2]{\mathbb{E}_{#1}\left[#2\right]}
+\newcommand*\grad[3]{\mathcal{D}_{#1}(#2,#3)}
+\newcommand*\slope[1]{\|\mathcal{D}_{#1}\|}
+\newcommand*\md[1]{\|\frac{d}{dt}#1\|}
+\newcommand*\ap[2]{\tilde{#1}_{#2}}
+\newcommand*\F[0]{\mathcal{F}}
+\newcommand*\D[0]{\mathcal{D}}
+\renewcommand*\H[0]{\mathcal{H}}
+\newcommand*\Pspace[0]{\mathscr{P}}
+\newcommand*\Uspace[0]{\mathbb{U}}
+\renewcommand*\t[1]{\tilde{#1}}
+\renewcommand*\d[0]{\text{d}}
+\newcommand*\ot[1]{#1^{\perp}}
+\newcommand*\proj[0]{\text{Proj}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand*\lrb[1]{\left[#1\right]}
+\newcommand*\lrp[1]{\left(#1\right)}
+\newcommand*\eu[1]{\left\| #1\right\|}
+\renewcommand*\div[0]{\nabla \cdot}
+\renewcommand*\H[0]{\mathcal{H}}
+\renewcommand*\t[1]{\tilde{#1}}
+\renewcommand*\d[0]{\delta}
+\newcommand*\xt[0]{\tilde{x}}
+\newcommand*\vt[0]{\tilde{v}}
+\newcommand*\pt[0]{\tilde{p}}
+\newcommand*\qt[0]{\tilde{q}}
+\newcommand*\Phit[0]{\tilde{\Phi}}
+%NewSymbols
+\def\ci{\perp\!\!\!\perp}
+\def\half{\frac{1}{2}}
+\def\lv{\lVert}
+\def\rv{\rVert}
+\def\ke{\mathcal{K}}
+\def\kc{\hat{\mathcal{K}}_m}
+\DeclareMathOperator{\Tr}{tr}
+
+
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+
+\newcommand{\note}[1]{\textbf{{\color{red}#1}}}
+\newcommand{\rem}[1]{{\emph{#1}}}
+
+
+\newcommand{\BlackBox}{\rule{1.5ex}{1.5ex}}  % end of proof
+\newenvironment{Proof}{\par\noindent{\bf Proof\ }}{\hfill\BlackBox\\[2mm]}
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{fact}[theorem]{Fact}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\newcommand*\samethanks[1][\value{footnote}]{\footnotemark[#1]}
+
+\newcommand\psued[1]{R^s_{#1}}
+
+\newcommand\regret[1]{R^c_{#1}}
+
+\newcommand\ind[2]{\mathbb{I}_{#1,#2}}
+\newcommand\indi[0]{\mathbb{I}}
+
+\newcommand\algname{\text{OSOM }}
+
+\newcommand\tstar{\tau_*}
+\usepackage[shortlabels]{enumitem}
+\newcommand\unitball{\mathbb{B}_2^d(1)}
+
+\newcommand\mustar[1]{\mu_{#1}}
+\newcommand\nustar[1]{\nu_{#1}}
+\newcommand\thetastar{\theta^{*}}
+
+\newcommand\tinrange[2]{t \in \{#1,\ldots, #2\}}
+\newcommand\sinrange[2]{s \in \{#1,\ldots, #2\}}
+\newcommand\iinrange[2]{i \in \{#1,\ldots, #2\}}
+\newcommand\Xt{X_{t}}
+\newcommand\Xs{X_{s}}
+\newcommand\Xit[2]{X_{#1,#2}}
+\newcommand\alpt[2]{\alpha_{#1,#2}}
+\newcommand\betat[2]{\beta_{#1,#2}}
+
+\newcommand\muit[2]{\tilde{\mu}_{#1,#2}}
+
+\newcommand\gis{g_{i,s}}
+\newcommand\git{g_{i,t}}
+
+\newcommand\ccomplex{\mathcal{C}_t^c}
+\newcommand\csimple{\mathcal{C}_t^s(i)}
+
+\newcommand\mconstraint{V_t}
+
+\newcommand\Ostar{\Omega^*}
+\newcommand\Otilde{\tilde{\Omega}_t}
+\newcommand\Ohat{\hat{\Omega}_t}
+
+\newcommand\Tstar{\theta^*}
+\newcommand\Ttilde{\tilde{\theta}_t}
+\newcommand\That{\hat{\theta}_t}
+
+
+\newcommand\Xboldt{\mathbf{X}_{1:t}}
+\newcommand\Aboldt{\boldsymbol{\alpha}_{1:t}}
+\newcommand\Gboldt{\mathbf{G}_{1:t}}
+
+\newcommand\Xboldtn{\mathbf{X}}
+\newcommand\Aboldtn{\boldsymbol{\alpha}}
+\newcommand\Gboldtn{\mathbf{G}}
+
+\newcommand\averagerew{\bar{g}_{i,t}}
+
+\newcommand\Otildes{\tilde{\Omega}_s}
+\newcommand\Ohats{\hat{\Omega}_s}
+
+\newcommand\bfm[1]{\mathbf{#1}}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}

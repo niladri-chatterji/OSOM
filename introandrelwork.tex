@@ -1,0 +1,45 @@
+\section{Introduction}
+\rem{Write why contextual bandits are important. Write the running motivating example with drugs and patients vectors. The patients need to be given shown one of $K$ drugs. Maybe the contexts (age, sex, etc.) don't matter. Importance of best of both worlds in terms of saving on sample complexity.}
+ 
+\note{Add related work here.}
+\subsection{Problem Setup}
+
+At the beginning of each round $\tinrange{1}{n}$ the learner is required to choose one of $K$ arms and gets a \emph{reward} associated with that arm. To help make this choice the learner is handed a context vector at the beginning of each round $\Xt = [\Xit{1}{t},\ldots,\Xit{K}{t}] \in \mathbb{R}^{(d+K)\times K}$, which is a concatenation of $K$, $(d+K)$-dimensional vectors. Each of these contexts vectors $\Xit{i}{t}$ are themselves a concatenation of two vectors, $\Xit{i}{t} = [\alpt{i}{t},  \betat{i}{t}]$ where $\alpt{i}{t} \in \mathbb{R}^d$ has bounded 2-norm $\lv \alpt{i}{t} \rv_2 \le 1$ and $\betat{i}{t} \in \mathbb{R}^K$ is a vector that is $1$ in its $i^{th}$ coordinate and 0 everywhere else (an indicator for each arm this context is associated with).
+
+At each round let $\git$ denote the reward of arm $i$. The rewards could be generated from one of the two models below. Denote the choice of the algorithm at each round by $A_s \in\{1,\ldots,K\}$. The rewards could be arriving from one of two models that is described below:\\
+
+\textbf{Simple Model} (SM): Under the simple model the mean rewards of $K$ arms are fixed and are not a function of the contexts. That is, at each round
+\begin{align*}
+    g_{i,t} = \mustar{i} + \eta_{i,t},\qquad  \forall \iinrange{1}{K}
+    \end{align*}
+where $\mu_i \in [-1,1]$, $\{\eta_{i,t}\}_{i=1}^K$ are identical, independent, zero mean noise and is $\sigma$-sub-Gaussian. Let the arm with the highest reward have mean $\mu^*$ and be indexed by $i^*$. Then the benchmark that the algorithm hopes to compete against is the \emph{pseudo-regret} (henceforth regret for brevity),
+\begin{align}
+    \label{def:expectedpseudoregret}
+    \psued{n} := n \mu^* -\sum_{s = 1}^n \mustar{A_s} .
+\end{align} 
+
+Define the gap as the difference in the mean rewards of the best arm compared to the mean reward of the $i^{th}$ arm, that is, $\Delta_i := \mu^* - \mu_i $. Previous literature on multi-armed bandits \citep{auer2002finite} tells us that the best one can hope to do in this setting in the worst case is $\psued{n} = \Omega(\sum_{i}\log(n)/\Delta_i)$~\citep{Lai:1985:AEA:2609660.2609757,bubeck2013bounded}. Several algorithms like Uniform Confidence Bound (UCB) achieve this lower bound up to constant factors\note{see Csaba and Tor book for appropriate references.} \\
+
+\textbf{Complex Model} (CM): The other model that could generate the rewards is the \emph{complex model} where there exists an underlying linear predictor $\Omega^* = [\thetastar,  \mustar{1},\ldots,\mustar{K} ] \in \mathbb{R}^{d\times K}$ the mean rewards of the two arms are linear functions of the contexts,
+\begin{align*}
+    g_{i,t} = \langle \Omega^*, X_{i,t} \rangle + \eta_{i,t} = \mustar{i} + \langle \thetastar, \alpt{i}{t}\rangle + \eta_{i,t}
+\end{align*}
+for some $\mustar{i} \in [-1,1]$, $\thetastar \in \unitball$ and as before $\{\eta_{i,t}\}_{t=1}^n$ are identical, independent zero mean noise. At each round define $x_t = \argmax_{\{\Xit{i}{t}\}_{i=1}^K}\left\{ \langle \Omega^*, X_{i,t}\rangle \right\}$ -- the context vector associated to the best arm at round $t$. The benchmark here is expected pseudo regret with respect to the generative linear model:
+\begin{align}
+\label{def:expectedregret}
+   \regret{n} :=\sum_{s=1}^n \left[\langle x_t, \Ostar \rangle - \langle X_{A_s},\Ostar\rangle \right] ,
+\end{align}
+\note{talk about the lower bounds here, what are the appropriate results. etc.. } 
+
+
+We assume that the part of the context vectors associated with the linear part come from a distribution such that, for all $i\in \{1,\ldots,K\}$ and for all $t \in \{1,2,\ldots\}$
+\begin{align*}
+    \mathbb{E}_{t-1}\left[\alpha_{i,t}\right] = 0, \qquad \mathbb{E}_{t-1}\left[\alpha_{i,t}\alpha_{i,t}^{\top}\right] = \Sigma_c \succeq \gamma_{\min} I,
+\end{align*}
+that is the conditional mean of the vectors are $0$ and the conditional covariance matrix has its minimum eigenvalue bounded by $\gamma_{\min}$.
+
+%By using OFUL Algorithm \citep{abbasi2011improved} we can hope to have the pseudo-regret bounded by $\regret{n} \le \tilde{\mathcal{O}}(d\sqrt{n})$. Observe that clearly the Simple Model (SM) is contained within the Complex Model (CM). Does by using using OFUL we also simultaenously have that under the simple model $\psued{n} \le \tilde{\mathcal{O}}(d\sqrt{n})$. The question that we attempt to answer here is the following, can we do better?\\
+
+
+%\emph{Question: Does there exist an algorithm that simultaenously bounds the regret under the simple model at a rate $\psued{n} \le \tilde{\mathcal{O}}(\sqrt{n})$ and under the complex model at a rate $\regret{n}\le \tilde{\mathcal{O}}(d\sqrt{n})$?}
+

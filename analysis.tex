@@ -1,0 +1,117 @@
+\section{Analysis}
+
+To prove theorem Theorem \ref{thm:mainregretbound} we need to show that the regret bounded under either underlying model. Under the simple model we show that Condition \eqref{test:complextest} is \emph{not violated} with high probability. This ensures that when the data is generated from the simple model $b = \text{`Simple'}$ over the run of the algorithm and our regret remains bounded.
+
+On the other hand when the data is generated according to the complex model we demonstrate that if Condition \eqref{test:complextest} is \emph{not violated} then the regret under the Complex Model remains bounded. If the condition gets violated at a certain round we which switch to the estimates of the complex model -- `$j_t$' and the regret remains bounded in the subsequent rounds. 
+
+
+\subsection{Regret under the Simple Model}
+The following lemma establishes that under the simple model Condition \eqref{test:complextest} is not violated with high probability. That is, the deviations of the estimated returns the complex estimate -- $\sum_{s=1}^t \langle \Xit{j_s}{s}, \Otildes \rangle $ to the actual returns seen so far by the algorithm $\sum_{s=1}^t g_{i_s,s}$ is of order $w(t)$.
+\begin{lemma} \label{lem:conditionnotviolatedundersimple}
+Under the Simple Model we have with probability $1-3\delta$ that for all $t\ge 0$
+\begin{align*}
+    \sum_{s=1}^t \langle \Xit{j_s}{s}, \Otildes \rangle - \sum_{s=1}^t g_{i_s,s} < w(t).
+\end{align*}
+\end{lemma}
+\begin{Proof} Under the simple model we have $g_{i,t} = \langle \Xit{i}{t},\Ostar\rangle + \eta_{i,t} = \mustar{i} + \eta_{i,t}$ therefore, 
+\begin{align*}
+    \sum_{s=1}^t \langle \Xit{j_s}{s}, \Otildes \rangle - \sum_{s=1}^t g_{i_s,s} & = \sum_{s=1}^t \langle X_{j_s,s}, \tilde{\Omega}_s \rangle - \sum_{s=1}^t \langle \Xit{i_s}{s}, \Ostar \rangle + \sum_{s=1}^t \eta_{i_s,s}\\
+    & = \underbrace{ \sum_{s=1}^t \eta_{i_s,s}}_{=: \Gamma_{no}}+ \underbrace{\sum_{s=1}^t \langle x_s - \Xit{i_s}{s} , \Ostar \rangle}_{=:\Gamma_{sp}}+ \underbrace{\sum_{s=1}^t \langle X_{j_s,s}, \Otildes \rangle - \sum_{s=1}^t \langle x_s, \Ostar \rangle}_{=:\Gamma_{cp}} \\
+    & = \Gamma_{no} + \Gamma_{sp} + \Gamma_{cp}.
+\end{align*}
+Notice that the difference neatly decomposes into three terms each of which is easy to interpret. The last term $\Gamma_{no}$ is purely a sum of the noise in the problem that concentrates exponentially fast. The second term $\Gamma_{sp}$ corresponds to the regret up to round $t$ under the choices $i_s$ prescribed by the algorithm assuming it is the Simple Model. Finally the first term $\Gamma_{cm}$ is just a function of the choices of the algorithm assuming the complex model is correct. This can be bounded by appealing to the definition of the confidence ellipsoid $\ccomplex$.
+
+\textbf{Step (i)} \emph{(Bound on $\Gamma_{no}$)}:
+By Theorem \ref{thm:selfnormalized} with $V=1$ and $Y_s = 1$ in 1-dimension we get for all $t\ge 0$, with probability $1-\delta$
+\begin{align*}
+    \Gamma_{no} = \sum_{s=1}^{t} \eta_{i_s,s} \le \sigma\sqrt{\frac{1+t}{2}\log\left(\frac{1}{\delta}\right)}.
+\end{align*}
+ 
+
+\textbf{Step (ii)} \emph{(Bound on $\Gamma_{sp}$)}:
+The term $\Gamma_{sp}$ corresponds to the pseudo-regret of the algorithm when playing arms according to the simple model estimate (UCB-type rule) up to round $t$. First suppose that the confidence intervals do not fail that is, for all $i \in \{1,\ldots,K\}$ for all $s\in \{1,\ldots,t\}$, $\lvert \averagerew - \mu_i \rvert \le \csimple$. This happens with probability $1-\delta$ by Lemma \ref{lem:csimplebound}. If we play action $i$, the upper estimate of the action above is above $\mu^*$. Hence,
+\begin{align*}
+    \mathcal{C}_s^s(i) \ge \frac{\Delta_i}{2}.
+\end{align*}
+Substituting the definition of the confidence interval and squaring gives us, 
+\begin{align*}
+    \frac{T_i^2(s)-1}{T_i(s)+1} \le \frac{T_i^2(s)}{T_i(s)+1} \le \frac{4}{\Delta_i^2} \left(2\log\left( \frac{K(1+T_i(s))}{\delta}\right) \right).
+\end{align*}
+By Lemma 8 of \citep{antos2010active} we get that for all $s\ge 0$
+\begin{align*}
+    T_i(s) \le 3 + \frac{16}{\Delta_i^2} \log\left( \frac{2K}{\Delta_i \delta}\right).
+\end{align*}
+Thus by the definition of regret $\psued{t} = \sum_{s=1}^t \langle x_s - X_{i_s},\Ostar\rangle  = \sum_{i\neq i^*} \Delta_i T_{i}(t)$, we get that with the same probability ($1-\delta$), the term $\Gamma_{sp}$ is bounded by,
+\begin{align*}
+    \Gamma_{sp} = \psued{t} & = \sum_{i:\Delta_i > 0 } \Delta_i T_{i}(t) \\
+    & \le \sum_{i : \Delta_i < \phi} \phi T_{i}(t) + \sum_{i:\Delta_i \ge \phi} \Delta_i T_{i}(t) \\
+    & \le \phi t + \sum_{i: \Delta_i \ge \phi}\Delta_i \left( 3 + \frac{16}{\Delta^2_i} \log\left(\frac{2K}{\Delta_i \delta}\right)\right)\\
+    & \le 3\sum_{i:\Delta_i \ge \phi}\Delta_i + \phi t + \frac{16K}{\phi} \log\left(\frac{2K}{\phi \delta}\right) \le 3K + 16\sqrt{Kt\log\left(\frac{2Kt}{\delta}\right)}.
+\end{align*}
+\textbf{Step (iii)} \emph{(Bound on $\Gamma_{cp}$)}:
+Let $\tilde{\Omega}_s = [\tilde{\theta}_s, \tilde{\nu}_1,\ldots, \tilde{\nu}_K]$, that is, $\tilde{\theta}_s$ is the vector predicting $\theta^*$ (in this case the zero vector) and $\tilde{\nu}_j$ is predicting $\mu_j$ (because we are assuming the simple model to be true here). Similarly let  $\hat{\Omega}_s = [\hat{\theta}_s, \hat{\nu}_1,\ldots, \hat{\nu}_K]$. Expanding $\Gamma_{cp}$ using it's definition:
+\begin{align*}
+    \Gamma_{cp}& = \sum_{s=1}^t \langle \Xit{j_s}{s},\Otildes \rangle - \sum_{s=1}^t \langle x_s,\Ostar \rangle \\
+    & = \sum_{s=1}^t \langle \Xit{j_s}{s},\Otildes -\Ohats \rangle + \sum_{s=1}^t \langle \Xit{j_s}{s},\Ohats - \Ostar \rangle + \underbrace{\sum_{s=1}^t \langle \Xit{j_s}{s} - x_s, \Ostar \rangle }_{\le 0} \\
+    & \overset{(i)}{=} \sum_{s=1}^t\langle \alpha_{j_s,s},\tilde{\theta}_{s} -\hat{\theta}_s \rangle + \sum_{s=1}^t  \langle \alpha_{j_s,s},\hat{\theta}_{s} -\theta^* \rangle  + \sum_{s=1}^t \tilde{\nu}_{j_s,s} - \hat{\nu}_{j_s,s} + \sum_{s=1}^t \hat{\nu}_{j_s,s} - \mu_{j_s} + \underbrace{\sum_{s=1}^t \mu_{j_s} - \mu^{*}}_{\le 0}\\
+    & \le  \sum_{s=1}^t\langle \alpha_{j_s,s},\tilde{\theta}_{s} -\hat{\theta}_s \rangle + \sum_{s=1}^t  \langle \alpha_{j_s,s},\hat{\theta}_{s}  \rangle  + \sum_{s=1}^t \tilde{\nu}_{j_s,s} - \hat{\nu}_{j_s,s} + \sum_{s=1}^t \hat{\nu}_{j_s,s} - \mu_{j_s} \\
+    & \overset{(ii)}{\le} \sum_{s=1}^{t} \lv \alpha_{j_s,s} \rv_2 \left( \lv \tilde{\theta}_s - \hat{\theta}_s \rv_2 + \lv \hat{\theta}_s \rv_2 \right) + \sum_{s=1}^t \tilde{\nu}_{j_s,s} - \hat{\nu}_{j_s,s} + \sum_{s=1}^t \hat{\nu}_{j_s,s} - \mu_{j_s} \\
+    & \overset{(iii)}{\le}  \underbrace{\sum_{s=1}^{t} \left( \lv \tilde{\theta}_s - \hat{\theta}_s \rv_2 + \lv \hat{\theta}_s \rv_2 \right)}_{=: \Xi^L_t} + \underbrace{\sum_{s=1}^t \tilde{\nu}_{j_s,s} - \hat{\nu}_{j_s,s} + \sum_{s=1}^t \hat{\nu}_{j_s,s} - \mu_{j_s}}_{=: \Xi^B_t} \numberthis \label{def:xis}
+\end{align*} 
+where $(i)$ follows by the definition of $\Xit{j_s}{s} = [\alpha_{j_s,s}, \beta_{j_s,s}]$, $(ii)$ is by Cauchy-Schwartz inequality and $(iii)$ is because $\lv \alpha_{j_s,s} \rv_2 \le 1$. We can control the norms of each of terms $\Xi^L_t$ and $\Xi^B_t$ by the definitions of the confidence ellipsoids and by our assumption on the distribution of the contexts.
+
+Each of these bounds on $\Gamma_{cp},\Gamma_{sp}$ and $\Gamma_{no}$ holds with probability $1-\delta$ therefore a union bound gives the desired result.
+\end{Proof}
+\begin{Proof}[Proof of part (a) of Theorem \ref{thm:mainregretbound}]
+Note that the Condition \eqref{test:complextest} is \emph{not violated} with probability $1-3\delta$ under the simple model by the lemma above. Conditioned on this event, \algname plays according to the simple model estimates $i_t$ for all rounds. Invoking Theorem 7 in \citep{abbasi2011improved} gives us that with probability $1-\delta$, $\psued{n}\le \sum_{i:\Delta_i >0} 3\Delta_i + (16/\Delta_i)\log(2K/\Delta_i \delta)$. A union bound gives the desired result.
+\end{Proof}
+
+
+\subsection{Regret under the Complex Model}
+
+The bound on the regret under the complex model follows by establishing two facts. First we demonstrate that the regret is bounded when Condition \eqref{test:complextest} is \emph{not violated}. Secondly, if the condition does get violated at some round, say $\tau_*$, then in the subsequent rounds \algname chooses arms according to the complex model estimates `$j_s$' for $t \in [\tau_*,\ldots,n]$. Past results of \citep{abbasi2011improved} show that the regret is bounded under this choice of actions for these rounds. 
+
+\begin{lemma} \label{lem:complexmodeltestnotviolated} If Condition \eqref{test:complextest} is not violated up until round $t$ then with probability $1-2\delta$ we have
+\begin{align*}
+    \regret{t} \le w(t) + \sigma \sqrt{\frac{1+t}{2}\log \left(\frac{1}{\delta}\right)}.
+\end{align*}
+\end{lemma}
+\begin{Proof}
+Note that if Condition \eqref{test:complextest} is not violated up to round t then we have that $A_s = i_s$ for these rounds. Expanding by using the definition of $\regret{t}$ we get,
+\begin{align*}
+    \regret{t} & = \sum_{s=1}^t \left( \langle x_s,\Ostar \rangle - \langle \Xit{i_s}{s}, \Ostar \rangle \right)\\
+    & = \sum_{s=1}^t \left( \langle x_s, \Ostar \rangle - g_{i_s,s}\right) + \sum_{s=1}^t \left(g_{i_s,s} -\langle X_{i_s,s},\Ostar\rangle  \right)\\
+    & = \sum_{s=1}^t \left(\langle x_s,\Ostar \rangle - \langle \Xit{j_s}{s},\Otildes \rangle \right) + \sum_{s=1}^t \left(\langle \Xit{j_s}{s},\Otildes \rangle - g_{i_s,s} \right) + \sum_{s=1}^t \left( g_{i_s,s} - \langle \Xit{i_s,s},\Ostar\rangle \right) \\
+    & \le \sum_{s=1}^t \underbrace{\left(\langle x_s,\Ostar \rangle - \langle \Xit{j_s}{s},\Otildes \rangle \right)}_{\le 0} + w(t) + \sum_{s=1}^t\eta_{i_s,s} .
+\end{align*}
+The pair $X_{j_s,s},\Otildes$ is chosen optimistically, therefore we have $\langle x_s,\Ostar \rangle - \langle \Xit{j_s}{s},\Otildes \rangle \le 0$ for all $s \in \{1,\ldots,t\}$ with probability $1-\delta$. 
+
+By Theorem \ref{thm:selfnormalized} with $V=1$ and $Y_s = 1$ we get that for all $t\ge 0$, $\sum_{s=1}^t\eta_{i_s,s}  \le \sigma \sqrt{((1+t)/2)\log(1/\delta)}$ with probability $1-\delta$. Thus by a union bound we have with probability $1-2\delta$,
+\begin{align*}
+    \regret{t} \le w(t) + \sigma \sqrt{\frac{1+t}{2}\log \left(\frac{1}{\delta}\right)}.
+\end{align*}
+\end{Proof}
+\begin{Proof}[Proof of part (b) of Theorem \ref{thm:mainregretbound}]
+To prove part (b) of Theorem \ref{thm:mainregretbound} we consider two cases. 
+
+\textbf{Case 1:} In the first case let us assume that Condition \eqref{test:complextest} is never violated. Then by Lemma \ref{lem:complexmodeltestnotviolated} we have that with probability $1-2\delta$,
+\begin{align*}
+    \regret{n} \le w(n) + \sigma \sqrt{\frac{1+n}{2}\log \left(\frac{1}{\delta}\right)}\le 2w(n).
+\end{align*}
+
+\textbf{Case 2:} In the second case let us assume that Condition \eqref{test:complextest} is violated in round $\tau_{*}$. Then first let us decompose the regret up to round $n$ into two pieces,
+\begin{align*}
+    \regret{n} \le \regret{\tau_{*}} + R^c_{\tau_{*}:n},
+\end{align*}
+where $R^c_{\tau_{*}:n}$ denotes the regret of the algorithm starting from round $\tau^* +1$ up to round $n$. We know by by Lemma \ref{lem:complexmodeltestnotviolated} that with probability $1-2\delta$, $$\regret{\tau_*} \le w(\tau_*) + \sigma \sqrt{\frac{1+\tau_*}{2}\log \left(\frac{1}{\delta}\right)} \le 2w(n).$$ Also by Theorem 3 of \citep{abbasi2011improved} we get that by choosing actions according to complex model estimates -- `$j_s$' we have that with probability $1-\delta$
+\small
+\begin{align*}
+R^c_{\tau_{*}:n} &\le 4\sqrt{n(d+K)\log\left(\frac{1}{K+1} + \frac{2n}{(d+K)}\right)}\left(1 + \sigma\sqrt{2\log(1/\delta)+ (d+K)\log(1+ 2n(K+1)/(d+K)} \right) \\
+& \le w(n).
+\end{align*}\normalsize
+By taking a union bound and using the decomposition of the regret above we get,
+\begin{align*}
+    \regret{n}\le 3w(n), 
+\end{align*}
+with probability $1-3\delta$.
+\end{Proof}
